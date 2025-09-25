@@ -306,7 +306,7 @@ app.use('/media', express.static(MEDIA_DIR));
 app.use(express.static(PUBLIC_DIR));
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8082;
 app.listen(PORT, () => {
   console.log('Server running on http://localhost:' + PORT);
 });
