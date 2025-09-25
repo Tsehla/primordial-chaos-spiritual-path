@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Direct</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+      #vanta-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+    }
+
+    html,
+    .root {
+      padding: 0;
+      margin: 0;
+      font-size: 18px;
+    }
+
+    /* body {
+      font: menu;
+      font-size: 1rem;
+      line-height: 1.4;
+      padding: 0;
+      margin: 0;
+    } */
+    section {
+      font: menu;
+      font-size: 1rem;
+      line-height: 1.4;
+      padding-top: 4rem;
+      width: 50%;
+      margin: auto;
+      position: relative;
+      z-index: 2;
+      /* height: 100vh; */
+      color: aqua;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 500;
+    }
+
+    details {
+      /* background-color: #0000006e; */
+      background-color: #0000000d;
+    }
+    de
+    details[open] summary ~ * {
+      animation: open 0.3s ease-in-out;
+    }
+
+    @keyframes open {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details summary {
+      width: 100%;
+      padding: 0.5rem 0;
+      border-top: 1px solid rgb(255, 255, 255);
+      position: relative;
+      cursor: pointer;
+      font-size: 1.25rem;
+      font-weight: 300;
+      list-style: none;
+    }
+
+    details summary:after {
+      content: "+";
+      color: #9c27b0;
+      position: absolute;
+      font-size: 1.75rem;
+      line-height: 0;
+      margin-top: 0.75rem;
+      right: 0;
+      font-weight: 200;
+      transform-origin: center;
+      transition: 200ms linear;
+      text-shadow: 0px -1px black;
+  
+    }
+    details[open] summary:after {
+      transform: rotate(45deg);
+      font-size: 2rem;
+    }
+    details summary {
+      outline: 0;
+    }
+    details p {
+      font-size: 0.95rem;
+      margin: 0 0 1rem;
+      padding: 1rem;
+      background-color: #fffdfd;
+      color: #000000;
+      border-radius: 5px;
+      border: 2px solid #9c27b059;
+      box-shadow: 1px 2px 5px 5px #9c27b059;
+
+    }
+
+    #home-nav {
+      position: absolute;
+      top: 32px;
+      left: 38px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.10);
+      box-shadow: 0 4px 16px #0002;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+    #home-nav:hover {
+      background: rgba(255,255,255,0.25);
+      box-shadow: 0 8px 32px #ffe06644, 0 2px 8px #0004;
+      transform: scale(1.08) translateY(-2px);
+    }
+
+  </style>
+
+</head>
+<body>
+
+    <a id="home-nav" href="./index.html" title="Home">
+    <svg width="38" height="38" viewBox="0 0 32 32" fill="none">
+      <rect width="32" height="32" rx="10" fill="rgba(255,255,255,0.18)" />
+      <path d="M8 16L16 9L24 16" stroke="#ffe066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 16V23H22V16" stroke="#ffe066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+
+  <div id="vanta-bg"></div>
+
+
+  <section>
+  <h1>
+    Hypertext Accordion
+  </h1>
+
+  <p>
+    This is an example of an accordion using the <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code> HTML elements. Click on the headings to expand or collapse the sections.
+  </p>
+
+  <details>
+    <summary>Details</summary>
+    <p>
+      Lorem ipsum dolor sit amet, eu alia suscipit mei. Reque iriure delectus vix id, ex sed forensibus suscipiantur. In eos exerci mollis apeirian, an qui latine alienum. Ad mea libris maluisset, consul assueverit sea ex.
+    </p>
+  </details>
+  <details>
+    <summary>Features</summary>
+    <p>
+      Lorem ipsum dolor sit amet, eu alia suscipit mei. Reque iriure delectus vix id, ex sed forensibus suscipiantur. In eos exerci mollis apeirian, an qui latine alienum. Ad mea libris maluisset, consul assueverit sea ex.
+    </p>
+  </details>
+  <details>
+    <summary>Information
+    </summary>
+    <p>Lorem ipsum dolor sit amet, eu alia suscipit mei. Reque iriure delectus vix id, ex sed forensibus suscipiantur. In eos exerci mollis apeirian, an qui latine alienum. Ad mea libris maluisset, consul assueverit sea ex. </p>
+  </details>
+  <details>
+    <summary>Specifications
+    </summary>
+    <p>Lorem ipsum dolor sit amet, eu alia suscipit mei. Reque iriure delectus vix id, ex sed forensibus suscipiantur. In eos exerci mollis apeirian, an qui latine alienum. Ad mea libris maluisset, consul assueverit sea ex. </p>
+  </details>
+</section>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
+  <script>
+    VANTA.RINGS({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00
+    })
+    </script>
+
+
+
+</body>
+
+</html>

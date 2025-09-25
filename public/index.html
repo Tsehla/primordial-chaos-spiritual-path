@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Water Ripple Effect</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: transparent;
+    }
+    #vanta-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+    }
+    #ripple-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      z-index: 1;
+      background: transparent;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    #content {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 2rem;
+      transition: transform 1s cubic-bezier(.4,2,.6,1);
+      will-change: transform;
+      pointer-events: none;
+      background: transparent;
+      text-shadow: 0 2px 8px #000a;
+    }
+    #content.perspective {
+      transform: perspective(800px) rotateX(10deg);
+    }
+    #button-row {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 2rem;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.2s cubic-bezier(.4,2,.6,1);
+    }
+    #button-row.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .ephemeral-btn {
+      width: 100px;
+      height: 100px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37), 0 2px 8px #0004;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(6px);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      user-select: none;
+      text-shadow: 0 2px 8px #000a;
+    }
+    .ephemeral-btn:nth-child(1) {
+      background: linear-gradient(135deg, #ffe066cc 80%, #fffbeacc 100%);
+      color: #7a5d00;
+    }
+    .ephemeral-btn:nth-child(2) {
+      background: linear-gradient(135deg, #ffb347cc 80%, #fffbeacc 100%);
+      color: #7a3500;
+    }
+    .ephemeral-btn:nth-child(3) {
+      background: linear-gradient(135deg, #4fc3f7cc 80%, #e3f2fdcc 100%);
+      color: #003c7a;
+    }
+    .ephemeral-btn:hover {
+      transform: scale(1.08) translateY(-6px);
+      box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.47), 0 4px 16px #0006;
+    }
+
+    #home-nav {
+    position: absolute;
+    top: 32px;
+    left: 38px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.10);
+    box-shadow: 0 4px 16px #0002;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    text-decoration: none;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+  }
+  #home-nav:hover {
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 8px 32px #ffe06644, 0 2px 8px #0004;
+    transform: scale(1.08) translateY(-2px);
+  }
+  </style>
+</head>
+<body>
+
+  <a id="home-nav" href="./index.html" title="Home">
+    <svg width="38" height="38" viewBox="0 0 32 32" fill="none">
+      <rect width="32" height="32" rx="10" fill="rgba(255,255,255,0.18)" />
+      <path d="M8 16L16 9L24 16" stroke="#ffe066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 16V23H22V16" stroke="#ffe066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <div id="vanta-bg"></div>
+  <canvas id="ripple-canvas"></canvas>
+  <div id="content">
+    <div>
+      <h1>Welcome to the Ancient Path</h1>
+      <p>Let the ripples reveal your journey...</p>
+    </div>
+  </div>
+  <div id="button-row">
+    <button class="ephemeral-btn" onclick="window.open('./direct.html', '_self')">Direct</button>
+    <button class="ephemeral-btn" onclick="window.open('./ancient.html', '_self')">Ancient</button>
+    <button class="ephemeral-btn" onclick="window.open('./etc.html', '_self')">???</button>
+  </div>
+  <!-- VANTA.js and THREE.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+  <script>
+    let vantaEffect = VANTA.WAVES({
+      el: "#vanta-bg",
+      mouseControls: false,
+      touchControls: false,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x4e7c,
+      shininess: 0.00,
+      waveHeight: 18.00,
+      zoom: 0.71,
+      waveSpeed: 0 // Start stationary
+    });
+
+    // Setup canvas
+    const canvas = document.getElementById('ripple-canvas');
+    const ctx = canvas.getContext('2d');
+    let W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+
+    // Ripple and droplet parameters
+    let ripples = [];
+    let animating = false;
+    let droplet = null;
+    let rippleSequence = [];
+    let rippleIndex = 0;
+    let dropletQueue = [];
+    let currentDroplet = 0;
+    let rippleCenter = { x: W / 2, y: H / 2 };
+
+    // Three droplet positions (center, left, right)
+    function getDropletPositions() {
+      return [
+        { x: W / 2, y: H / 2 },
+        { x: W / 3, y: H / 2 + H / 8 },
+        { x: 2 * W / 3, y: H / 2 - H / 8 }
+      ];
+    }
+
+    function drawRipple(ripple) {
+      ctx.save();
+      ctx.globalAlpha = ripple.alpha * (1 - ripple.progress);
+      ctx.beginPath();
+      ctx.arc(ripple.x, ripple.y, ripple.radius, 0, 2 * Math.PI);
+      ctx.strokeStyle = ripple.color;
+      ctx.lineWidth = ripple.lineWidth;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawDroplet(droplet) {
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath();
+      ctx.arc(droplet.x, droplet.y, droplet.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = "#b3e5fc";
+      ctx.shadowColor = "#4fc3f7";
+      ctx.shadowBlur = 12;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw droplet if exists
+      if (droplet) {
+        drawDroplet(droplet);
+      }
+
+      // Draw ripples
+      let stillAnimating = false;
+      for (let ripple of ripples) {
+        ripple.radius += ripple.speed;
+        ripple.progress += ripple.growth;
+        if (ripple.progress < 1) {
+          drawRipple(ripple);
+          stillAnimating = true;
+        }
+      }
+      ripples = ripples.filter(r => r.progress < 1);
+
+      // Handle ripple sequence
+      if (rippleSequence.length > 0 && rippleIndex < rippleSequence.length) {
+        let seq = rippleSequence[rippleIndex];
+        if (!seq.started) {
+          // Start this ripple
+          ripples.push({
+            x: seq.x,
+            y: seq.y,
+            radius: seq.startRadius,
+            speed: seq.speed,
+            progress: 0,
+            growth: seq.growth,
+            color: seq.color,
+            lineWidth: seq.lineWidth,
+            alpha: seq.alpha
+          });
+          seq.started = true;
+          stillAnimating = true;
+          // Schedule next ripple after a short delay
+          setTimeout(() => {
+            rippleIndex++;
+            animate();
+          }, seq.delay);
+        }
+      }
+
+      if (stillAnimating || (droplet && !droplet.landed)) {
+        requestAnimationFrame(animate);
+      } else {
+        animating = false;
+        rippleSequence = [];
+        rippleIndex = 0;
+        // After ripple ends, move to next droplet or start VANTA
+        currentDroplet++;
+        if (currentDroplet < dropletQueue.length) {
+          setTimeout(() => {
+            dropDroplet(dropletQueue[currentDroplet].x, dropletQueue[currentDroplet].y);
+          }, 400);
+        } else {
+          // After last droplet, change perspective and start VANTA
+          document.getElementById('content').classList.add('perspective');
+          setTimeout(() => {
+            vantaEffect.setOptions({ waveSpeed: 0.7 });
+            setTimeout(showButtons, 900); // show buttons after water starts moving
+          }, 400);
+        }
+      }
+    }
+
+    function dropRippleSequence(x, y) {
+      // Prepare 10 sequential ripples, slower
+      rippleSequence = [];
+      rippleIndex = 0;
+      for (let i = 0; i < 10; i++) {
+        rippleSequence.push({
+          x: x,
+          y: y,
+          startRadius: 10 + i * 6,
+          speed: 1.5 + i * 0.2, // slower speed
+          growth: 0.006 + i * 0.001, // slower growth
+          color: "#4fc3f7",
+          lineWidth: Math.max(2, 6 - i * 0.4),
+          alpha: 0.7 - i * 0.05,
+          delay: 120, // ms between ripples, slower
+          started: false
+        });
+      }
+      animate();
+    }
+
+    function dropDroplet(x, y) {
+      // Pause VANTA waves before droplet falls
+      vantaEffect.setOptions({ waveSpeed: 0 });
+      // Start droplet from above
+      droplet = {
+        x: x,
+        y: -30,
+        radius: 10,
+        landed: false,
+        targetY: y
+      };
+      document.getElementById('content').classList.remove('perspective');
+      function fall() {
+        ctx.clearRect(0, 0, W, H);
+        drawDroplet(droplet);
+        if (droplet.y < droplet.targetY - 10) {
+          droplet.y += 18;
+          requestAnimationFrame(fall);
+        } else {
+          droplet.landed = true;
+          droplet = null;
+          dropRippleSequence(x, y);
+        }
+      }
+      fall();
+    }
+
+    // On click, drop three droplets in sequence
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const positions = getDropletPositions();
+      // Center the first droplet at click, others offset
+      positions[0] = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+      dropletQueue = positions;
+      currentDroplet = 0;
+      if (!animating) {
+        animating = true;
+        vantaEffect.setOptions({ waveSpeed: 0 });
+        dropDroplet(dropletQueue[0].x, dropletQueue[0].y);
+      }
+    });
+
+    // On load, drop three droplets in sequence at default positions
+    window.onload = () => {
+      dropletQueue = getDropletPositions();
+      currentDroplet = 0;
+      if (!animating) {
+        animating = true;
+        vantaEffect.setOptions({ waveSpeed: 0 });
+        dropDroplet(dropletQueue[0].x, dropletQueue[0].y);
+      }
+    };
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W;
+      canvas.height = H;
+    });
+
+
+    // Show buttons after VANTA water starts moving
+    function showButtons() {
+      const row = document.getElementById('button-row');
+      row.classList.add('visible');
+
+      // Add hover ripple effect on buttons
+      const buttons = document.querySelectorAll('.ephemeral-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('mouseenter', e => {
+            const rect = btn.getBoundingClientRect();
+            const rippleX = e.clientX - rect.left;
+            const rippleY = e.clientY - rect.top;
+            createButtonRipple(btn, rippleX, rippleY);
+            });
+        });
+
+        function createButtonRipple(button, x, y) {
+            const ripple = document.createElement('span');
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.width = ripple.style.height = '20px';
+            ripple.style.left = `${x - 10}px`;
+            ripple.style.top = `${y - 10}px`;
+            ripple.style.background = 'rgba(255, 255, 255, 0.7)';
+            ripple.style.transform = 'scale(1)';
+            ripple.style.opacity = '1';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.transition = 'transform 0.6s ease-out, opacity 0.6s ease-out';
+            button.appendChild(ripple);
+            requestAnimationFrame(() => {
+                ripple.style.transform = 'scale(10)';
+                ripple.style.opacity = '0';
+            });
+            setTimeout(() => {
+                button.removeChild(ripple);
+            }, 600);
+        }
+
+        //hide
+        document.getElementById('content').style.display = 'none';
+    }
+
+
+
+
+  </script>
+</body>
+</html>

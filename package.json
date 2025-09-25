@@ -1,0 +1,25 @@
+{
+  "name": "spirituality_ancient_path_that_should_have_been_taken_from_beginning",
+  "version": "1.0.0",
+  "description": "spirituality alternate ancient path that should have been taken from beginning before material tooling path was chosen.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tsehla/spirituality_ancient_path_that_should_have_been_taken_from_beginning.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tsehla/spirituality_ancient_path_that_should_have_been_taken_from_beginning/issues"
+  },
+  "homepage": "https://github.com/Tsehla/spirituality_ancient_path_that_should_have_been_taken_from_beginning#readme",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  }
+}
