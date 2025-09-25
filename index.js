@@ -53,7 +53,7 @@ app.get('/', (req, res) => {
   res.send(`
     <html>
     <head>
-      <title>Submit Content</title>
+      <title>Ancient Spiritual path</title>
       <meta name="viewport" content="width=device-width,initial-scale=1">
       <style>
         body {
@@ -144,7 +144,7 @@ app.get('/', (req, res) => {
     </head>
     <body>
       <div class="form-container">
-        <h2>Submit Content</h2>
+        <h2>Ancient Spiritual path : Submit Content</h2>
         <form method="POST" enctype="multipart/form-data" action="/submit">
           <label>Heading:
             <input name="heading" type="text" maxlength="120" autocomplete="off" />
