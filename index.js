@@ -152,10 +152,10 @@ app.get('/', (req, res) => {
           <label>Text:
             <textarea name="text" rows="5" cols="40" maxlength="2000"></textarea>
           </label>
-          <label>Images:
+          <label>Images: (multiple allowed)
             <input name="images" type="file" multiple accept="image/*">
           </label>
-          <label>Files:
+          <label>Files: (multiple allowed)
             <input name="files" type="file" multiple>
           </label>
           <label>Target HTML:
