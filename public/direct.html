@@ -140,6 +140,74 @@
       }
     }
 
+    code {
+      background: #0000006e;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+    /* Popup styles */
+  #popup-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.55);
+    align-items: center;
+    justify-content: center;
+  }
+  #popup-box {
+      background: #181c24a3;
+      color: #fff;
+      border-radius: 12px;
+      max-width: 583px;
+      width: 92vw;
+      margin: 0 auto;
+      padding: 8rem 1.5rem 6.5rem 1.5rem;
+      box-shadow: 0 8px 32px #0008, 0 2px 8px #9c27b044;
+      /* position: relative; */
+      animation: popup-in 0.25s;
+      overflow: auto;
+      height: 100%;
+  }
+
+
+
+  #popup-box h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    color: #ffe066;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  #popup-box p {
+    margin: 0 0 1rem 0;
+    font-size: 1.05em;
+    color: #e0e0e0;
+    line-height: 1.5;
+  }
+  #popup-close {
+    position: absolute;
+    top: 12px; right: 18px;
+    background: none;
+    border: none;
+    color: #ffe066;
+    font-size: 1.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+  }
+  #popup-close:hover {
+    color: #ff5252;
+  }
+  @keyframes popup-in {
+    from { transform: scale(0.92); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+
   </style>
 
 </head>
@@ -157,13 +225,30 @@
   <div id="vanta-bg"></div>
 
 
+    <!-- Popup HTML -->
+  <div id="popup-overlay">
+    <div id="popup-box">
+      <button id="popup-close" aria-label="Close">&times;</button>
+      <h2>Important Note</h2>
+      <p>
+        Methods in here should work for everyone irrespective of belief and background well atleast to some extend. 
+        <br><br>
+        I suggest you start with open mind dont overthink just do, forget things en experience en just do like its all you have for now. 
+        <br
+        If you are stuck maybe check <a href="./ancient.html" style="color: #ffe066; text-decoration: underline;"> [ Ancient ]</a> for deeper clarification regarding the method, provided u wont be deeply confused then quit instead of trying unstill u can make sense of what said then try few more times to ensure you are not miss-interpriting which is even worse and bad like really bad.
+      </p>
+    </div>
+  </div>
+
   <section>
   <h1>
     Direct/Short-cut
   </h1>
 
   <p>
-    Methods as Tools to use to achieve specific <code>&lt;goals&gt;</code> striped down to <code>&lt;bare essence.&gt;</code> 
+    Methods as Tools to use to achieve specific <code>&lt;goals&gt;</code> striped down to <code>&lt;bare essence.&gt;</code><br><button id="important-btn" style="cursor:pointer;font-size:0.8em;float:left;background:none;border:none;color:rgb(255, 0, 0);text-decoration:underline;padding:0;margin:0;">
+      Important
+    </button>
   </p>
   <details>
     <summary>What is Direct/Short-cut?</summary>
@@ -189,6 +274,21 @@
     })
     </script>
 
+        <!-- Popup logic -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.getElementById('important-btn');
+      const overlay = document.getElementById('popup-overlay');
+      const closeBtn = document.getElementById('popup-close');
+      if (btn && overlay && closeBtn) {
+        btn.onclick = () => { overlay.style.display = 'flex'; };
+        closeBtn.onclick = () => { overlay.style.display = 'none'; };
+        overlay.onclick = (e) => {
+          if (e.target === overlay) overlay.style.display = 'none';
+        };
+      }
+    });
+    </script>
 
 
 </body>
