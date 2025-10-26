@@ -129,12 +129,35 @@
     transform: scale(1.08) translateY(-2px);
   }
 
+  #info_text {
+    position: relative;
+    width: 93vw;
+    height: 93vh;
+    display: none
+    
+  }
+
+  #info_text p {
+    color: #f5f2f7;
+    margin: auto 20vw;
+    font-size: 24px;
+  }
   
+  #info_text code {
+    background-color: #000000;border-radius: 2px;padding: 0 16px;display: flex;
+  }
     @media (max-width: 600px) {
       #content {
         /* font-size: 1.2rem;
         padding: 0 1rem; */
         text-align: center;
+      }
+
+    #info_text p {
+          color: #f5f2f7;
+          margin: auto 20vw;
+          font-size: 18px;
+          margin-top: 98px;
       }
     }
   </style>
@@ -153,10 +176,14 @@
   <canvas id="ripple-canvas"></canvas>
   <div id="content">
     <div>
-      <h1>Primodial <code style="    background-color: #000000;border-radius: 15px;">&lt;Chaos&gt;</code> Spirit <code style="background-color: #ffffff;border-radius: 15px;color: black;">&lt;path&gt;</code></h1>
+      <h1>Primodial <code style="background-color: #000000;border-radius: 15px;">&lt;Chaos&gt;</code> Spirit <code style="background-color: #ffffff;border-radius: 15px;color: black;">&lt;path&gt;</code></h1>
       <p><code>&lt;choose&gt;</code>...</p>
     </div>
   </div>
+  <div id="info_text">
+      <p> Every word has a <code >purpose</code>, every choice of word has a <code >purpose</code>, alignment of words in a sentence has a <code >purpose</code>. Some to <code >Invoke</code> somethin in you, others to plant a <code >seed</code> but ultimately all to <code >serve you</code> one way or the other, directly or not, now or in future or even maybe never at all until you reach neccesary heights.</p>
+  </div>
+  
   <div id="button-row">
     <button class="ephemeral-btn" onclick="window.open('./direct.html', '_self')">Direct</button>
     <button class="ephemeral-btn" onclick="window.open('./ancient.html', '_self')">Ancient</button>
@@ -294,7 +321,7 @@
           document.getElementById('content').classList.add('perspective');
           setTimeout(() => {
             vantaEffect.setOptions({ waveSpeed: 0.7 });
-            setTimeout(showButtons, 900); // show buttons after water starts moving
+            setTimeout(show_info_text, 900); // show buttons after water starts moving
           }, 400);
         }
       }
@@ -386,6 +413,19 @@
     });
 
 
+    function show_info_text() {
+
+      document.getElementById('content').style.display = 'none';//hide
+
+      const infoText = document.getElementById('info_text');
+      infoText.style.display = 'flex';
+
+
+      setTimeout(showButtons, 6000);
+
+
+    }
+
     // Show buttons after VANTA water starts moving
     function showButtons() {
       const row = document.getElementById('button-row');
@@ -425,7 +465,7 @@
         }
 
         //hide
-        document.getElementById('content').style.display = 'none';
+        document.getElementById('info_text').style.display = 'none';
     }
 
 
