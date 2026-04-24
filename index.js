@@ -150,7 +150,7 @@ app.get('/', (req, res) => {
             <input name="heading" type="text" maxlength="120" autocomplete="off" />
           </label>
           <label>Text:
-            <textarea name="text" rows="5" cols="40" maxlength="2000"></textarea>
+            <textarea name="text" rows="5" cols="40" maxlength="20000000000"></textarea>
           </label>
           <label>Images: (multiple allowed)
             <input name="images" type="file" multiple accept="image/*">
